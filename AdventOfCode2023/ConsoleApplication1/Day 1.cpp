@@ -2,10 +2,25 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <string>
 
 int main()
 {
     std::cout << "Hello World!\n";
+
+    std::fstream newfile;
+
+    newfile.open("Text.txt", std::ios::in); //open a file to perform read operation using file object
+    if (newfile.is_open()) {
+        std::cout << "TROLL" << std::endl; //checking whether the file is open
+        std::string tp;
+        while (getline(newfile, tp)) { //read data from file object and put it into string.
+
+            std::cout << tp << "\n"; //print the data of the string
+        }
+        newfile.close(); //close the file object.
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
