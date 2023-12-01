@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 int main()
 {
@@ -13,12 +14,43 @@ int main()
 
     newfile.open("Text.txt", std::ios::in); //open a file to perform read operation using file object
     if (newfile.is_open()) {
-        std::cout << "TROLL" << std::endl; //checking whether the file is open
-        std::string tp;
-        while (getline(newfile, tp)) { //read data from file object and put it into string.
 
-            std::cout << tp << "\n"; //print the data of the string
+
+        std::string line;
+        std::vector<std::string> numbers{ "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+        std::vector<int> calibration_values;
+        
+
+        while (getline(newfile, line)) //read data from file object and put it into string.
+        {
+            std::vector<int> token;
+            for (int charWeLookingAtIndex = 0; charWeLookingAtIndex < line.size(); charWeLookingAtIndex++) //Loop through each char
+            {
+                const char c = line[charWeLookingAtIndex]; //get the char we looking at
+                if (c >= '0' && c <= '9') { //is between 0 and 9 (chars are glorified ints)
+                    token.push_back(c - 48); //-48 cause char cringe (all letters for ascii code)
+                }
+                for (int j = 0; j < numbers.size(); j++) { //Loop through each spelt out number
+                    const std::string& n = numbers[j]; // get the spelt out number we looking at
+                    if (line.size() >= charWeLookingAtIndex + n.size()) { //if spelt out number can fit into position along line we are at
+                        if (line.substr(charWeLookingAtIndex, n.size()) == n) { //if spelt out number is in the substring of the line to the char index we are looking at
+                            token.push_back(j + 1);
+                        }
+                    }
+                }
+            }
+
+            calibration_values.push_back(token.front() * 10 + token.back()); //*10 cause first digit is 10s
+            //std::cout << (token[0] * 10 + token.back()) << std::endl;
         }
+
+        int total = 0;
+        for (int value : calibration_values) 
+        {
+            total += value;
+        }
+        std::cout << total << std::endl;
+
         newfile.close(); //close the file object.
     }
 }
