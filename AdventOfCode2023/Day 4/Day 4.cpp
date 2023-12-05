@@ -15,21 +15,15 @@ int main()
     if (newfile.is_open()) {
         std::string line;
         int total = 0;
-        int totalNumber = 0;
-
-        while (getline(newfile, line)) 
-        {
-            totalNumber++;
-        }
 
         while (getline(newfile, line)) //read data from file object and put it into string.
         {
             std::vector<int> winningNumbers;
             std::vector<int> playingNumbers;
             int lineTotal = 0;
-            std::string m_line = line.substr(line.find(": ") + 2);
-            std::cout << m_line << std::endl;
-            int j = 0;
+            //std::string m_line = line.substr(line.find(": ") + 2);
+            //std::cout << m_line << std::endl;
+            int currentLine = 0;
 
             bool searchWinningNumbers = true;
 
@@ -95,16 +89,19 @@ int main()
             std::map<int, int> gameRepeats;
             
             //Setup Map for tracking number of games repeats
-
-            for (int i = 0; i < totalNumber; i++) 
+            for (int i = 0; i < 6; i++) 
             {
-                gameRepeats.insert(i, 1);
+                gameRepeats.insert({i, 1});
             }
+            std::cout << "Set up Map" << std::endl;
 
-            while (m_line != "") 
+            for (int k = 0; k < gameRepeats[currentLine]; k++)
             {
-                for(int k = 0; k < gameRepeats[j]; k++)
+                std::string m_line = line.substr(line.find(": ") + 2);
+
+                while (m_line != "")
                 {
+
                     if (searchWinningNumbers) //searching numbers before |
                     {
                         if (m_line[0] == '|') //gets to seperator between winning and playing numbers
@@ -135,38 +132,36 @@ int main()
                     {
                         m_line = m_line.substr(3);
                     }
-                }
-                j++;
 
-                int posNumberToAddOn = 1;
-                for (int number : winningNumbers)
-                {
-                    for (int playnumber : playingNumbers)
+                    std::cout << winningNumbers.size() << '\t' << playingNumbers.size() << '\n';
+                    
+                    int posNumberToAddOn = 1;
+                    for (int number : winningNumbers)
                     {
-                        if (number == playnumber)
+                        for (int playnumber : playingNumbers)
                         {
-                            gameRepeats[j + posNumberToAddOn] += 1;
+                            //std::cout << number << '\t' << playnumber << '\n';
+                            if (number == playnumber)
+                            {
+                                gameRepeats[currentLine + posNumberToAddOn] += 1;
+                                posNumberToAddOn++;
+                            }
                         }
                     }
+                    winningNumbers.clear();
+                    playingNumbers.clear();
                 }
-                winningNumbers.clear();
-                playingNumbers.clear();
             }
-                
-           
+            currentLine++;
             total += lineTotal;
 
 
-            // printing map gquiz1
             std::map<int, int>::iterator itr;
-            std::cout << "\nThe map gquiz1 is : \n";
-            std::cout << "\tKEY\tELEMENT\n";
             for (itr = gameRepeats.begin(); itr != gameRepeats.end(); ++itr) {
-                std::cout << '\t' << itr->first << '\t' << itr->second
-                    << '\n';
+                std::cout << itr->first << '\t' << itr->second << '\n';
                 total += itr->second;
             }
-            std::cout << std::endl;
+            //std::cout << std::endl;
         }
         std::cout << total << std::endl;
         newfile.close(); //close the file object.
