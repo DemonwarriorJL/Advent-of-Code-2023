@@ -143,13 +143,6 @@ int ReconstructNumbers(std::vector<std::string> lines, int coordY, int coordX, i
     return stoi(s_numberValue);
 }
 
-//void CheckNumbers(std::map<std::vector<int>, int> coords, int number)
-//{
-//    std::map<std::vector<int>, int>::iterator itr;
-//
-//    for (int i = 0; i < )
-//}
-
 int main()
 {
     std::fstream newfile;
@@ -180,6 +173,7 @@ int main()
 
                 for (int i = 0; i < line.size(); i++) //Move through each line char by char (i is index of current char)
                 {
+
                     //if (!isdigit(line[i]) && line[i] != '.') //if char is a symbol
                     //{
                     //    //std::cout << line[i] << std::endl;
@@ -240,19 +234,18 @@ int main()
         }
         std::cout << std::endl;
 
-        for (int thing : rebuiltValues)
-        {
-            //std::cout << thing << std::endl;
-            total1 += thing;
-        }
-        std::cout << total1 << std::endl;
+        //for (int thing : rebuiltValues)
+        //{
+        //    //std::cout << thing << std::endl;
+        //    total1 += thing;
+        //}
+        //std::cout << total1 << std::endl;
 
         for (int i = 0; i < rebuiltValues.size(); i += 2)
         {
             total2 += rebuiltValues[i] * rebuiltValues[i + 1];
         }
 
-        
         std::cout << total2 << std::endl;
     }
 }
